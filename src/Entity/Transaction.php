@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\TransactionRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * @ORM\Entity(repositoryClass=TransactionRepository::class)
  * @ORM\Table(name="`transaction`")
@@ -19,12 +21,15 @@ class Transaction
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\ManyToOne(targetEntity="AccountBalance", inversedBy="transactions")
+     * @ORM\JoinColumn(name="account_id", referencedColumnName="id")
      */
-    private $account_id;
+    private $account;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotNull
+     * @Assert\Type("integer")
      */
     private $amount;
 
@@ -33,14 +38,14 @@ class Transaction
         return $this->id;
     }
 
-    public function getAccountId(): ?string
+    public function getAccount(): ?AccountBalance
     {
-        return $this->account_id;
+        return $this->account;
     }
 
-    public function setAccountId(string $account_id): self
+    public function setAccount(?AccountBalance $account): self
     {
-        $this->account_id = $account_id;
+        $this->account = $account;
 
         return $this;
     }
