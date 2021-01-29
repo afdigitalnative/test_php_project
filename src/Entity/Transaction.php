@@ -6,17 +6,20 @@ use App\Repository\TransactionRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=TransactionRepository::class)
  * @ORM\Table(name="`transaction`")
+ * @UniqueEntity("id")
  */
 class Transaction
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\Uuid
+     * @Assert\NotNull
      */
     private $id;
 
@@ -33,9 +36,16 @@ class Transaction
      */
     private $amount;
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
+    }
+
+    public function setId(string $id): self
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getAccount(): ?AccountBalance

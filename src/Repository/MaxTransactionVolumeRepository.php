@@ -19,32 +19,12 @@ class MaxTransactionVolumeRepository extends ServiceEntityRepository
         parent::__construct($registry, MaxTransactionVolume::class);
     }
 
-    // /**
-    //  * @return MaxTransactionVolume[] Returns an array of MaxTransactionVolume objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findMaxTransactionVolume(): ?MaxTransactionVolume
     {
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('m.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $qb = $this->createQueryBuilder('mtv')
+            ->orderBy('mtv.maxVolume', 'DESC')
+            ->setMaxResults(1);
+        
+        return $qb->getQuery()->getOneOrNullResult();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?MaxTransactionVolume
-    {
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }
