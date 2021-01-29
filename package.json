@@ -1,12 +1,16 @@
 {
-  "name": "account-management-backend-level-3",
-  "version": "0.0.1",
+  "private": true,
   "scripts": {
-    "build": "echo build your app here",
-    "start": "echo start your app here",
-    "test": "cypress run"
-  },
+      "build": "sudo apt-get install php-sqlite3 -y && cd app && cp .env.example .env && composer install && php artisan key:generate",
+      "start": "cd ./app && composer install && cp .env.example .env && php artisan key:generate && php artisan migrate --force && php artisan serve",
+      "refresh": "cd ./app && composer install && cp .env.example .env && php artisan key:generate && php artisan migrate:refresh --force",
+      "test": "cd ./app && composer install && cp .env.example .env && php artisan key:generate && ./vendor/bin/phpunit"
+    },
   "devDependencies": {
-    "cypress": "^5.4.0"
+      "axios": "^0.19",
+      "cross-env": "^7.0",
+      "laravel-mix": "^5.0.1",
+      "lodash": "^4.17.19",
+      "resolve-url-loader": "^3.1.0"
   }
 }

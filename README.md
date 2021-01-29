@@ -37,7 +37,16 @@ Your task is to build a backend service that implements this [API specification]
 2. Update the [`build`](package.json#L5) and [`start`](package.json#L6) scripts in [package.json](package.json) that respectively build and run your application. **[See examples](https://www.notion.so/devskills/Backend-78f49bea524148228f29ceb446157474)**.
 
 ---
+<<<<<<< HEAD
+## Tests
+`php artisan test`
 
 Made by [DevSkills](https://devskills.co). 
 
 How was your experience? **Give us a shout on [Twitter](https://twitter.com/DevSkillsHQ) / [LinkedIn](https://www.linkedin.com/company/devskills)**.
+=======
+
+Made by [DevSkills](https://devskills.co). 
+
+How was your experience? **Give us a shout on [Twitter](https://twitter.com/DevSkillsHQ) / [LinkedIn](https://www.linkedin.com/company/devskills)**.
+>>>>>>> f39f03b3e43f09a846c6e70f8b35637e17cc543c

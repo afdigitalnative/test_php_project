@@ -5,21 +5,35 @@ on:
       - '*'
       - '!master'
       - '!main'
+
+defaults:
+  run:
+    working-directory: app
+
 jobs:
   tests:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
+    name: Tests
     steps:
-      - name: Checkout
-        uses: actions/checkout@v1
-      - name: Fetch apiUrl
-        run: echo ::set-output name=apiUrl::$(jq -r .env.apiUrl cypress.json)/ping
-        id: fetchApiUrl
-      - name: Run tests
-        uses: cypress-io/github-action@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Cache dependencies
+        uses: actions/cache@v1
         with:
-          build: yarn run build
-          start: yarn run start
-          wait-on: ${{ steps.fetchApiUrl.outputs.apiUrl }}
+          path: ~/.composer/cache/files
+          key: dependencies-composer-${{ hashFiles('composer.json') }}
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.3
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite
+          coverage: none
+      - name: Install Composer dependencies
+        run: composer install --prefer-dist --no-interaction --no-suggest
+      - name: Execute tests
+        run: php artisan test
+      - name: Goto Root
+        run: cd ..
       - name: Set repo env var
         if: always()
         run: echo "github_repo=$GITHUB_REPOSITORY" >> $GITHUB_ENV
