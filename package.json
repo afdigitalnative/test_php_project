@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
   "private": true,
   "scripts": {
       "build": "sudo apt-get install php-sqlite3 -y && cd app && cp .env.example .env && composer install && php artisan key:generate",
@@ -15,16 +14,3 @@
       "resolve-url-loader": "^3.1.0"
   }
 }
-=======
-  "name": "account-management-backend-level-3",
-  "version": "0.0.1",
-  "scripts": {
-    "build": "echo build your app here",
-    "start": "echo start your app here",
-    "test": "cypress run"
-  },
-  "devDependencies": {
-    "cypress": "^5.4.0"
-  }
-}
->>>>>>> f39f03b3e43f09a846c6e70f8b35637e17cc543c
