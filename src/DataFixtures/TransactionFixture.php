@@ -9,6 +9,7 @@ use Doctrine\Persistence\ObjectManager;
 use App\Entity\Transaction;
 use App\Entity\AccountBalance;
 use App\Entity\MaxTransactionVolume;
+use App\Factory\TransactionFactory;
 
 class TransactionFixture extends Fixture
 {
@@ -70,10 +71,38 @@ class TransactionFixture extends Fixture
             $transaction->setAccount(
                 $addedAccounts[$this->faker->numberBetween(
                     0,
-                    count($addedAccounts)-1
+                    count($addedAccounts) - 1
                 )]
             );
             $manager->persist($transaction);
+        }
+        $manager->flush();
+
+        $hasMaxVolume = true;
+        $maxSavedVolume = $manager->getRepository(MaxTransactionVolume::class)
+            ->findMaxTransactionVolume();
+
+        if (!$maxSavedVolume) {
+            $maxSavedVolume = new MaxTransactionVolume();
+            $hasMaxVolume = false;
+        }
+
+        $transactionsVolumes = $manager->getRepository(Transaction::class)
+            ->findTransactionVolume();
+
+        $tNumber = $transactionsVolumes[0]['tNumber'];
+        $maxSavedVolume->setMaxVolume($tNumber);
+        foreach ($transactionsVolumes as $tVolume) {
+            if ($tNumber === $tVolume['tNumber']) {
+                $maxSavedVolume->addAccount(
+                    $tVolume['transaction']->getAccount()
+                );
+                continue;
+            }
+            break;
+        }
+        if (!$hasMaxVolume) {
+            $manager->persist($maxSavedVolume);
         }
 
         $manager->flush();

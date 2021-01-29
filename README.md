@@ -1,3 +1,12 @@
+# m-cheraim :
+How to install:
+- Clone the project
+- CLI: composer install (after having installed composer)
+- CLI: php bin/console doctrine:database:create
+- CLI: php bin/console doctrine:migrations:migrate
+- CLI: php bin/console doctrine:fixtures:load (to fill database with test data)
+- CLI: php bin/console cache:clear
+
 # Account Management Backend - Level 3
 
 **Before you get started, please read [this guide](https://www.notion.so/Get-started-with-your-assignment-dade100d93054a6db1036ce294bdaeb6)** that walks you through how to submit your solution and get help.
