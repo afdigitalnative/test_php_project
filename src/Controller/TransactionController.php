@@ -111,7 +111,6 @@ class TransactionController extends AbstractController
         } catch (ErrorException $e) {
             return new Response('Specified content type not allowed.', Response::HTTP_UNSUPPORTED_MEDIA_TYPE);
         } catch (Exception $e) {
-            var_dump($e->getMessage());
             return new Response('Internal server error.', Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
