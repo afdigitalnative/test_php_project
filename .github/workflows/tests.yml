@@ -32,6 +32,8 @@ jobs:
         run: composer install --prefer-dist --no-interaction --no-suggest
       - name: Execute tests
         run: php artisan test
+      - name: Goto Root
+        run: cd ..
       - name: Set repo env var
         if: always()
         run: echo "github_repo=$GITHUB_REPOSITORY" >> $GITHUB_ENV
