@@ -1,0 +1,47 @@
+name: Tests
+on: 
+  push:
+    branches:
+      - '*'
+      - '!master'
+      - '!main'
+
+defaults:
+  run:
+    working-directory: app
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    name: Tests
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Cache dependencies
+        uses: actions/cache@v1
+        with:
+          path: ~/.composer/cache/files
+          key: dependencies-composer-${{ hashFiles('composer.json') }}
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.3
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite
+          coverage: none
+      - name: Install Composer dependencies
+        run: composer install --prefer-dist --no-interaction --no-suggest
+      - name: Execute tests
+        run: php artisan test
+      - name: Set repo env var
+        if: always()
+        run: echo "github_repo=$GITHUB_REPOSITORY" >> $GITHUB_ENV
+      - uses: joelwmale/webhook-action@master
+        if: failure()
+        with:
+          url: https://app.devskills.co/api/assignment-status
+          body: '{"assignmentRepository": "${{ env.github_repo }}","status": "failed"}'
+      - uses: joelwmale/webhook-action@master
+        if: success()
+        with:
+          url: https://app.devskills.co/api/assignment-status
+          body: '{"assignmentRepository": "${{ env.github_repo }}","status": "passed"}'
